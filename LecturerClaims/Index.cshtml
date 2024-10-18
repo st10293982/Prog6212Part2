@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Prog6212Part2.Models.LecturerClaim>
+
+<h2>Submitted Claims</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hourly Rate</th>
+            <th>Hours Worked</th>
+            <th>Additional Note</th>
+            <th>Date Submitted</th>
+            <th>Supporting Document</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.AdditionalNote</td>
+                <td>@claim.DateSubmitted</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(claim.DocumentPath))
+                    {
+                        <a href="@claim.DocumentPath" target="_blank">Download</a>
+                    }
+                    else
+                    {
+                        <span>No Document</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
