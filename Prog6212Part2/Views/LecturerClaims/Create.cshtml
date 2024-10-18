@@ -1,0 +1,42 @@
+﻿@model Prog6212Part2.Models.LecturerClaim
+
+@{
+    ViewData["Title"] = "Submit Lecturer Claim";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="HourlyRate" class="control-label"></label>
+        <input asp-for="HourlyRate" class="form-control" />
+        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="HoursWorked" class="control-label"></label>
+        <input asp-for="HoursWorked" class="form-control" />
+        <span asp-validation-for="HoursWorked" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AdditionalNote" class="control-label"></label>
+        <textarea asp-for="AdditionalNote" class="form-control"></textarea>
+        <span asp-validation-for="AdditionalNote" class="text-danger"></span>
+    </div>
+
+    <!-- File Upload Field -->
+    <div class="form-group">
+        <label for="supportingDocument" class="control-label">Supporting Document</label>
+        <input type="file" name="supportingDocument" class="form-control" />
+        <span class="text-muted">Allowed file types: .pdf, .docx, .xlsx</span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Submit Claim" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

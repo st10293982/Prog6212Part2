@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Prog6212Part2.Models.LecturerClaim>
+
+@{
+    ViewData["Title"] = "Pending Claims Approval";
+}
+
+<h2>Pending Claims Approval</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hourly Rate</th>
+            <th>Hours Worked</th>
+            <th>Additional Note</th>
+            <th>Supporting Document</th>
+            <th>Date Submitted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var claim in Model)
+    {
+        <tr>
+            <td>@claim.HourlyRate</td>
+            <td>@claim.HoursWorked</td>
+            <td>@claim.AdditionalNote</td>
+            <td>
+                @if (!string.IsNullOrEmpty(claim.DocumentPath))
+                {
+                    <a href="@claim.DocumentPath" target="_blank">Download Document</a>
+                }
+                else
+                {
+                    <span>No Document</span>
+                }
+            </td>
+            <td>@claim.DateSubmitted.ToString("g")</td>
+            <td>
+                <form method="post" asp-action="Approve" asp-route-id="@claim.Id" style="display:inline;">
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+                <form method="post" asp-action="Reject" asp-route-id="@claim.Id" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

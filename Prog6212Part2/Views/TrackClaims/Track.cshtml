@@ -1,0 +1,149 @@
+﻿@* @model IEnumerable<Prog6212Part2.Models.LecturerClaim>
+
+@{
+    ViewData["Title"] = "Track Claims Status";
+}
+
+<h2>Track Claims Status</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Claim ID</th>
+            <th>Hourly Rate</th>
+            <th>Hours Worked</th>
+            <th>Date Submitted</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody id="claimsTable">
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.DateSubmitted.ToString("g")</td>
+                <td>
+                    <div class="progress">
+                        <div id="progress-bar-@claim.Id" class="progress-bar @GetStatusClass(claim)" role="progressbar" style="width: @GetProgress(claim)%;">
+                            @GetStatusText(claim)
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@
+ @model IEnumerable<Prog6212Part2.Models.LecturerClaim>
+
+@{
+    ViewData["Title"] = "Track Claims";
+}
+
+<h2>Track Claims</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Hourly Rate</th>
+            <th>Hours Worked</th>
+            <th>Additional Note</th>
+            <th>Status</th>
+            <th>Progress</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.AdditionalNote</td>
+                <td>
+                    <span class="badge @GetStatusClass(claim)">@GetStatusText(claim)</span>
+                </td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar @GetStatusClass(claim)" role="progressbar" style="width: @GetProgress(claim)%;" aria-valuenow="@GetProgress(claim)" aria-valuemin="0" aria-valuemax="100">
+                            @GetProgress(claim)%
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function updateClaimsStatus() {
+            $.ajax({
+                url: '@Url.Action("TrackStatus", "LecturerClaims")',  // Create an endpoint to get updated claim statuses
+                type: 'GET',
+                success: function (data) {
+                    $.each(data, function (i, claim) {
+                        var progressBar = $('#progress-bar-' + claim.Id);
+                        progressBar.attr('class', 'progress-bar ' + claim.StatusClass);  // Update the class (color)
+                        progressBar.css('width', claim.Progress + '%');  // Update the width
+                        progressBar.text(claim.StatusText);  // Update the text (Pending, Approved, Rejected)
+                    });
+                }
+            });
+        }
+
+        setInterval(updateClaimsStatus, 5000);  // Poll every 5 seconds to update the status in real-time
+    </script>
+}
+@functions {
+    public string GetStatusClass(Prog6212Part2.Models.LecturerClaim claim)
+    {
+        if (claim.IsApproved == null)
+        {
+            return "bg-warning";  // Pending (yellow)
+        }
+        else if (claim.IsApproved == true)
+        {
+            return "bg-success";  // Approved (green)
+        }
+        else
+        {
+            return "bg-danger";  // Rejected (red)
+        }
+    }
+
+    public int GetProgress(Prog6212Part2.Models.LecturerClaim claim)
+    {
+        if (claim.IsApproved == null)
+        {
+            return 50;  // Pending (50%)
+        }
+        else if (claim.IsApproved == true)
+        {
+            return 100;  // Approved (100%)
+        }
+        else
+        {
+            return 100;  // Rejected (100%)
+        }
+    }
+
+    public string GetStatusText(Prog6212Part2.Models.LecturerClaim claim)
+    {
+        if (claim.IsApproved == null)
+        {
+            return "Pending";
+        }
+        else if (claim.IsApproved == true)
+        {
+            return "Approved";
+        }
+        else
+        {
+            return "Rejected";
+        }
+    }
+}
