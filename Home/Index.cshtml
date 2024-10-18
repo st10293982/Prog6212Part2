@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Add custom styles -->
+<style>
+    body {
+        background-color: navy;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .welcome-section {
+        padding: 50px 0;
+        text-align: center;
+    }
+
+    .btn-custom {
+        background-color: white;
+        color: navy;
+        border-radius: 20px;
+        padding: 10px 20px;
+        border: 2px solid white;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background-color: navy;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .features-section {
+        padding: 50px 0;
+    }
+
+    .feature-block {
+        background-color: white;
+        color: navy;
+        padding: 30px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-block h2 {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .feature-block p {
+        font-size: 16px;
+    }
+</style>
+
+<div class="welcome-section">
+    <h1 class="display-4">Welcome to the Lecturer Claim System</h1>
+    <p>Effortlessly manage your claims, track your claim status, and handle claim approvals with our user-friendly system. Navigate to one of the functions below to get started.</p>
+</div>
+
+<div class="features-section container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="feature-block">
+                <h2>Submit a Claim</h2>
+                <p>Submit new claims easily with the necessary documents and information.</p>
+                <a href="/LecturerClaims/Create" class="btn btn-custom">Submit Claim</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-block">
+                <h2>Manage Claims</h2>
+                <p>View and approve or reject claims waiting for your review.</p>
+                <a href="/ManageClaims/Index" class="btn btn-custom">Manage Claims</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-block">
+                <h2>Track Claims</h2>
+                <p>Keep track of your submitted claims and their status in real-time.</p>
+                <a href="/TrackClaims/Track" class="btn btn-custom">Track Claims</a>
+            </div>
+        </div>
+    </div>
+</div>
